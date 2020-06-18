@@ -50,7 +50,7 @@ typedef struct Position {
 
 #if defined(EVAL_NNUE) || defined(EVAL_LEARN)
     // --- StateInfo
-    StateInfo* state() const { return st; }
+    StateInfo* state() const { return const_cast<StateInfo *>(&gameHistory[histPly]); }
     const Eval::EvalList* eval_list() const { return &evalList; }
 #endif  // defined(EVAL_NNUE) || defined(EVAL_LEARN)
 
@@ -59,6 +59,7 @@ typedef struct Position {
     PieceNumber piece_no_of(Square sq) const;
 
     Color side_to_move() const { return stm; };
+    Key get_key() const { return key; };
 
     Piece piece_on(Square sq) const { return board[sq]; };
 #endif  // defined(EVAL_NNUE)
@@ -85,7 +86,6 @@ typedef struct Position {
     Key key;
 
     StateInfo gameHistory[MAXGAMEMOVES];
-    StateInfo *st;
 
 #if defined(EVAL_NNUE) || defined(EVAL_LEARN)
     // �]���֐��ŗp�����̃��X�g
